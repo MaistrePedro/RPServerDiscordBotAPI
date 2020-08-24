@@ -17,7 +17,7 @@ class CreateSkillLevelTable extends Migration
             $table->id();
             $table->integer('character_id')->unsigned();
             $table->integer('skill_id')->unsigned();
-            $table->integer('level')->default(0);
+            $table->integer('level');
             $table->timestamps();
         });
     }
