@@ -13,14 +13,19 @@ class CharacterController extends Controller
         return Character::all();
     }
 
-    public function getOneCharacter(Request $request)
+    public function getOneCharacterById(integer $id)
     {
-        return Character::where('discord_id', $request->input('discordId'))->first();
+        return Character::where('id', $id)->first();
+    }
+
+    public function getOneCharacterByDiscordId($discordId)
+    {
+        return Character::where('discord_id', $discordId)->first();
     }
 
     public function createCharacter(Request $request)
     {
-        $job = Job::where('short', $request->input('job'));
+        $job = Job::where('short', $request->input('job'))->first();
         $jobId = $job->id;
 
         $character = new Character();
@@ -59,9 +64,8 @@ class CharacterController extends Controller
         return Controller::SUCCESS;
     }
 
-    public function kill(Request $request)
+    public function kill(integer $id)
     {
-        $id = $request->input('id');
         Character::destroy($id);
 
         return Controller::SUCCESS;

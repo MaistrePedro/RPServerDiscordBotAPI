@@ -16,6 +16,7 @@ class CreateInventoryPiecesTable extends Migration
         Schema::create('inventory_pieces', function (Blueprint $table) {
             $table->id();
             $table->string('label');
+            $table->string('short');
             $table->timestamps();
         });
     }

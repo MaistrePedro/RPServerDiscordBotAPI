@@ -102,9 +102,8 @@ class FamilyController extends Controller
         return Controller::SUCCESS;
     }
 
-    public function deleteFamilyMember(Request $request)
+    public function deleteFamilyMember(integer $id)
     {
-        $id = $request->input('id');
         FamilyMember::destroy($id);
 
         return Controller::SUCCESS;

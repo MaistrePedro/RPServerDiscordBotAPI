@@ -70,9 +70,56 @@ class InventoryController extends Controller
         return Controller::SUCCESS;
     }
 
-    public function destroy(Request $request)
+    public function destroy(integer $id)
     {
-        $id = $request->input('id');
         Inventory::destroy($id);
+        return Controller::SUCCESS;
+    }
+
+    public function getInventoryPieces()
+    {
+        return InventoryPieces::all();
+    }
+
+    public function getOneInventoryPiece(integer $id)
+    {
+        return InventoryPieces::where('id', $id)->first();
+    }
+
+    public function createInventoryPiece(Request $request)
+    {
+        $piece = new InventoryPieces;
+        $piece->label = $request->input('label');
+        $piece->short = $request->input('short');
+        $piece->save();
+
+        return Controller::SUCCESS;
+    }
+
+    public function editInventoryPiece(Request $request)
+    {
+        $piece = InventoryPieces::where('id', $request->input('id'));
+        $field = $request->input('field');
+        $value = $request->input('value');
+
+        switch ($field) {
+            case InventoryPieces::LABEL:
+                $piece->label = $value;
+            break;
+            case InventoryPieces::SHORT:
+                $piece->short = $value;
+            break;
+            default: 
+                return Controller::ERROR;
+            break;
+        }
+        $piece->save();
+        return Controller::SUCCESS;
+    }
+
+    public function deleteInventoryPiece(integer $id)
+    {
+        InventoryPieces::destroy($id);
+        return Controller::SUCCESS;
     }
 }

@@ -13,7 +13,7 @@ class CreateCharacterTable extends Migration
      */
     public function up()
     {
-        Schema::create('character', function (Blueprint $table) {
+        Schema::create('characters', function (Blueprint $table) {
             $table->id();
             $table->string('discord_id');
             $table->string('name');
