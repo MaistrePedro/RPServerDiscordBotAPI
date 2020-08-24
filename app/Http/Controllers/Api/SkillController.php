@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Api;
 
 use App\Character;
 use App\Job;
@@ -8,6 +8,7 @@ use App\Skill;
 use App\JobSkill;
 use App\SkillLevel;
 use Illuminate\Http\Request;
+use App\Http\Controllers\Controller;
 
 class SkillController extends Controller
 {
@@ -16,9 +17,9 @@ class SkillController extends Controller
         return Skill::all();
     }
 
-    public function getSkillsByJob(Request $request)
+    public function getSkillsByJob(string $short)
     {
-        $job = Job::where('short', $request->input('job'));
+        $job = Job::where('short', $short);
         $skillJobs = JobSkill::where('job_id', $job->id); 
         $skills = [];
         $skills['job'] = $job;
@@ -28,9 +29,9 @@ class SkillController extends Controller
         return $skills;
     }
 
-    public function getSkillsByCharacter(Request $request)
+    public function getSkillsByCharacter(integer $id)
     {
-        $character = Character::where('id', $request->input('character'))->first();
+        $character = Character::where('id', $id)->first();
         $skillLevels = SkillLevel::where('character_id', $character->id);
         $skills = [];
         $skills['character'] = $character;
@@ -73,9 +74,9 @@ class SkillController extends Controller
         return Controller::SUCCESS;
     }
 
-    public function deleteSkillLevel(Request $request)
+    public function deleteSkillLevel(integer $id)
     {
-        SkillLevel::destroy($request->input('skill_level'));
+        SkillLevel::destroy($id);
 
         return Controller::SUCCESS;
     }
@@ -92,9 +93,9 @@ class SkillController extends Controller
         return Controller::SUCCESS;
     }
 
-    public function deleteSkillJob(Request $request)
+    public function deleteSkillJob(integer $id)
     {
-        SkillJob::destroy($request->input('skill_job'));
+        SkillJob::destroy($id);
 
         return Controller::SUCCESS;
     }
@@ -121,9 +122,9 @@ class SkillController extends Controller
         return Controller::SUCCESS;
     }
 
-    public function deleteSkill(Request $request)
+    public function deleteSkill(integer $id)
     {
-        Skill::destroy($request->input('skill'));
+        Skill::destroy($id);
 
         return Controller::SUCCESS;
     }

@@ -1,10 +1,11 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Api;
 
 use App\Character;
 use App\Job;
 use Illuminate\Http\Request;
+use App\Http\Controllers\Controller;
 
 class CharacterController extends Controller
 {
@@ -13,7 +14,7 @@ class CharacterController extends Controller
         return Character::all();
     }
 
-    public function getOneCharacterById(integer $id)
+    public function getOneCharacterById(int $id)
     {
         return Character::where('id', $id)->first();
     }

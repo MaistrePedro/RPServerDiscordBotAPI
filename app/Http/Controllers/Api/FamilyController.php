@@ -1,10 +1,11 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Api;
 
 use App\Family;
 use App\FamilyMember;
 use Illuminate\Http\Request;
+use App\Http\Controllers\Controller;
 
 class FamilyController extends Controller
 {

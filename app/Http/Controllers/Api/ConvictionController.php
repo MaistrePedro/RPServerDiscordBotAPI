@@ -1,10 +1,11 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Api;
 
 use App\Character;
 use App\Conviction;
 use Illuminate\Http\Request;
+use App\Http\Controllers\Controller;
 
 class ConvictionController extends Controller
 {
@@ -13,9 +14,9 @@ class ConvictionController extends Controller
         return Conviction::all();
     }
 
-    public function getConvictionByCharacter(Request $request)
+    public function getConvictionByCharacter(integer $id)
     {
-        return Conviction::where('character_id', $request->input('character'));
+        return Conviction::where('character_id', $id);
     }
 
     public function addConviction(Request $request)
@@ -38,10 +39,9 @@ class ConvictionController extends Controller
         return Controller::SUCCESS;
     }
 
-    public function deleteConviction(Request $request)
+    public function deleteConviction(integer $id)
     {
-        $conviction = Conviction::where('id', $request->input('id'));
-        Conviction::destroy($conviction->id);
+        Conviction::destroy($id);
 
         return Controller::SUCCESS;
     }
