@@ -40,5 +40,39 @@ class InventoryController extends Controller
     public function editInventory(Request $request)
     {
         $object = Inventory::where('id', $request->input('id'));
+        $field = $request->input('field');
+        $value = $request->input('value');
+
+        switch ($field) {
+            case Inventory::NAME:
+                $object->name = $value;
+                break;
+            case Inventory::DAMAGE:
+                $object->damages = $value;
+                break;
+            case Inventory::EFFECT:
+                $object->effect = $value;
+                break;
+            case Inventory::QUANTITY:
+                if ($value === 0) {
+                    Inventory::destroy($object->id);
+                    break;
+                } 
+                else {
+                    $object->quantity = $value;
+                    break;
+                }
+            default:
+                return Controller::ERROR;
+                break;
+        }
+        $object->save();
+        return Controller::SUCCESS;
+    }
+
+    public function destroy(Request $request)
+    {
+        $id = $request->input('id');
+        Inventory::destroy($id);
     }
 }
