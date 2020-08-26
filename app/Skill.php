@@ -9,6 +9,13 @@ class Skill extends Model
     const NAME = 'name';
     const SHORT = 'short';
 
+    protected $table = 'skill';
+
+    protected $hidden = [
+        'created_at',
+        'updated_at',
+    ];
+
     public function jobSkills()
     {
         return $this->hasMany('App\JobSkill');

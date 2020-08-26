@@ -11,7 +11,13 @@ class Character extends Model
     const GIFT = 'gift';
     const JOB = 'job';
 
-    public function jobs()
+    protected $hidden = [
+        'job_id',
+        'created_at',
+        'updated_at',
+    ];
+
+    public function job()
     {
         return $this->belongsTo('App\Job');
     }

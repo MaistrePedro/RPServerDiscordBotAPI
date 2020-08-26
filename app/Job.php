@@ -11,8 +11,18 @@ class Job extends Model
     
     protected $table = 'job';
 
+    protected $hidden = [
+        'created_at',
+        'updated_at',
+    ];
+
     public function skills()
     {
         return $this->hasMany('App\JobSkill');
+    }
+
+    public function characters()
+    {
+        return $this->hasMany('App\Character');
     }
 }

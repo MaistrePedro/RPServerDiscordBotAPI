@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Api;
 
+use App\Character;
 use App\Wound;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
@@ -10,17 +11,25 @@ class WoundController extends Controller
 {
     public function getWounds()
     {
-        return Wound::all();
+        $results = [
+            'wounds' => Wound::all()
+        ];
+        return response()->json($results);
     }
 
-    public function getWoundsByCharacter(int $id)
+    public function getWoundsByCharacter(string $discord_id)
     {
-        return Wound::where('character_id', $id)->get();
+        $character = Character::where('discord_id', $discord_id)->first();
+        $results = [
+            'character_name' => $character->name,
+            'wounds' => Wound::where('character_id', $character->id)->get(),
+        ];
+        return response()->json($results);
     }
 
     public function hurt(Request $request)
     {
-        $character = Character::where('discord_id', $request->input('discord_id'));
+        $character = Character::where('discord_id', $request->input('discord_id'))->first();
         $wound = new Wound;
         $wound->name = $request->input('name');
         $wound->place = $request->input('place');

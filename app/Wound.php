@@ -11,6 +11,14 @@ class Wound extends Model
     const EFFECT = 'effect';
     const CHARACTER = 'character';
 
+    protected $table = 'wound';
+
+    protected $hidden = [
+        'character_id',
+        'created_at',
+        'updated_at',
+    ];
+
     public function character()
     {
         return $this->belongsTo('App\Character');

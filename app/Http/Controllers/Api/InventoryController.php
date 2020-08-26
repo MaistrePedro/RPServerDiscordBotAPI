@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Api;
 
 use App\Inventory;
 use App\InventoryPieces;
+use App\Character;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 
@@ -11,22 +12,22 @@ class InventoryController extends Controller
 {
     public function getInventories()
     {
-        return Inventory::all();
+        return Inventory::paginate(20);
     }
 
     public function getInventoriesByCharacter(int $discord_id)
     {
-        $character = Character::where('discord_id', $discord_id);
+        $character = Character::where('discord_id', $discord_id)->first();
         $result = [
-            'character' => $character,
+            'character_name' => $character->name,
             'inventory' => Inventory::where('character_id', $character->id)->get()
         ];
-        return $result;
+        return response()->json([$result]);
     }
 
     public function createInventory(Request $request)
     {
-        $piece = InventoryPieces::where('short', $request->input('piece'));
+        $piece = InventoryPieces::where('short', $request->input('piece'))->first();
         $pieceId = $piece->id;
         
         $inventory = new Inventory;
@@ -44,7 +45,7 @@ class InventoryController extends Controller
 
     public function editInventory(Request $request)
     {
-        $object = Inventory::where('id', $request->input('id'));
+        $object = Inventory::where('id', $request->input('id'))->first();
         $field = $request->input('field');
         $value = $request->input('value');
 
@@ -77,7 +78,7 @@ class InventoryController extends Controller
 
     public function destroy(integer $id)
     {
-        Inventory::destroy($id);
+        Inventory::where('id', $id)->first()->delete();
         return Controller::SUCCESS;
     }
 
@@ -86,9 +87,14 @@ class InventoryController extends Controller
         return InventoryPieces::all();
     }
 
-    public function getOneInventoryPiece(integer $id)
+    public function getOneInventoryPiece(int $id)
     {
         return InventoryPieces::where('id', $id)->first();
+    }
+
+    public function getOneInventoryPieceByShort(string $short)
+    {
+        return InventoryPieces::where('short', $short)->first();
     }
 
     public function createInventoryPiece(Request $request)
@@ -103,7 +109,7 @@ class InventoryController extends Controller
 
     public function editInventoryPiece(Request $request)
     {
-        $piece = InventoryPieces::where('id', $request->input('id'));
+        $piece = InventoryPieces::where('short', $request->input('short'))->first();
         $field = $request->input('field');
         $value = $request->input('value');
 
@@ -124,7 +130,7 @@ class InventoryController extends Controller
 
     public function deleteInventoryPiece(integer $id)
     {
-        InventoryPieces::destroy($id);
+        InventoryPieces::where('id', $id)->first()->delete();
         return Controller::SUCCESS;
     }
 }

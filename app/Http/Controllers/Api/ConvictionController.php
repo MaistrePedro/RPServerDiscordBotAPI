@@ -14,14 +14,18 @@ class ConvictionController extends Controller
         return Conviction::all();
     }
 
-    public function getConvictionByCharacter(integer $id)
+    public function getConvictionByCharacter(string $discord_id)
     {
-        return Conviction::where('character_id', $id);
+        $character = Character::where('discord_id', $discord_id)->first();
+        $results = [
+            'convictions' => Conviction::where('character_id', $character->id)->get()
+        ];
+        return response()->json($results);
     }
 
     public function addConviction(Request $request)
     {
-        $character = Character::where('id', $request->input('character'));
+        $character = Character::where('discord_id', $request->input('character'))->first();
         $conviction = new Conviction;
         $conviction->label = $request->input('label');
         $conviction->character_id = $character->id;
@@ -32,14 +36,14 @@ class ConvictionController extends Controller
 
     public function editConviction(Request $request)
     {
-        $conviction = Conviction::where('id', $request->input('id'));
+        $conviction = Conviction::where('id', $request->input('id'))->first();
         $conviction->label = $request->input('label');
         $conviction->save();
 
         return Controller::SUCCESS;
     }
 
-    public function deleteConviction(integer $id)
+    public function deleteConviction(int $id)
     {
         Conviction::destroy($id);
 

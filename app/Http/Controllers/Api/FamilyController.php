@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Api;
 
 use App\Family;
 use App\FamilyMember;
+use App\Character;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 
@@ -14,10 +15,14 @@ class FamilyController extends Controller
         return Family::all();
     }
 
-    public function getFamiliesByCharacter(Request $request)
+    public function getFamiliesByCharacter(string $discord_id)
     {
-        $character = $request->input('character_id');
-        return Family::where('character_id', $character);
+        $character = Character::where('discord_id', $discord_id)->first();
+        $results = [
+            'character_name' => $character->name,
+            'family' => Family::where('character_id', $character->id)->get()
+        ];
+        return $results;
     }
 
     public function createFamily(Request $request)
@@ -36,7 +41,7 @@ class FamilyController extends Controller
 
     public function editFamily(Request $request)
     {
-        $family = Family::where('id', $request->input('id'));
+        $family = Family::where('id', $request->input('id'))->first();
         $field = $request->input('field');
         $value = $request->input('value');
 
@@ -45,7 +50,7 @@ class FamilyController extends Controller
                 $family->name = $value;
                 break;
             case Family::MEMBER:
-                $member = FamilyMember::where('short', $request->input('member'));
+                $member = FamilyMember::where('short', $request->input('member'))->first();
                 $memberId = $member->id;
                 $family->family_member_id = $memberId;
                 break;
@@ -58,10 +63,10 @@ class FamilyController extends Controller
         return Controller::SUCCESS;
     }
 
-    public function kill(Request $request)
+    public function kill(int $id)
     {
-        $id = $request->input('id');
-        Family::destroy($id);
+        Family::where('id', $id)->first()->delete();
+        return Controller::SUCCESS;
     }
 
     public function getFamilyMembers()
@@ -69,9 +74,9 @@ class FamilyController extends Controller
         return FamilyMember::all();
     }
 
-    public function getOneFamilyMember(Request $request)
+    public function getOneFamilyMember(int $id)
     {
-        return FamilyMember::where('id', $request->input('id'));
+        return FamilyMember::where('id', $id);
     }
 
     public function createFamilyMember(Request $request)
@@ -86,7 +91,7 @@ class FamilyController extends Controller
 
     public function editFamilyMember(Request $request)
     {
-        $familyMember = FamilyMember::where('id', $request->input('id'));
+        $familyMember = FamilyMember::where('short', $request->input('short'))->first();
         $field = $request->input('field');
         $value = $request->input('value');
         switch ($field) {
@@ -104,10 +109,9 @@ class FamilyController extends Controller
         return Controller::SUCCESS;
     }
 
-    public function deleteFamilyMember(integer $id)
+    public function deleteFamilyMember(int $id)
     {
-        FamilyMember::destroy($id);
-
+        FamilyMember::where('id', $id)->first()->delete();
         return Controller::SUCCESS;
     }
 }

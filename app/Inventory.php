@@ -12,6 +12,15 @@ class Inventory extends Model
     const QUANTITY = 'quantity';
     const UNIT = 'unit';
 
+    protected $table = 'inventory';
+
+    protected $hidden = [
+        'character_id',
+        'inventory_pieces_id',
+        'created_at',
+        'updated_at',
+    ];
+
     public function inventoryPiece()
     {
         return $this->belongsTo('App\InventoryPieces');

@@ -19,24 +19,27 @@ class SkillController extends Controller
 
     public function getSkillsByJob(string $short)
     {
-        $job = Job::where('short', $short);
-        $skillJobs = JobSkill::where('job_id', $job->id); 
+        $job = Job::where('short', $short)->first();
+        $skillJobs = JobSkill::where('job_id', $job->id)->get(); 
         $skills = [];
         $skills['job'] = $job;
-        foreach ($skillJobs as $skill) {
-            $skills[] = Skill::where('id', $skill->skill_id);
+        $skills['skills'] = [];
+        foreach ($skillJobs as $skillJob) {
+            $skillJob->skill;
+            $skills['skills'][] = $skillJob;
         }
         return $skills;
     }
 
-    public function getSkillsByCharacter(integer $id)
+    public function getSkillsByCharacter(string $discord_id)
     {
-        $character = Character::where('id', $id)->first();
-        $skillLevels = SkillLevel::where('character_id', $character->id);
+        $character = Character::where('discord_id', $discord_id)->first();
+        $skillLevels = SkillLevel::where('character_id', $character->id)->get();
         $skills = [];
-        $skills['character'] = $character;
-        foreach ($skillLevels as $skill) {
-            $skills[] = Skill::where('id', $skill->skill_id);
+        $skills['character_name'] = $character->name;
+        foreach ($skillLevels as $skillLevel) {
+            $skillLevel->skill;
+            $skills['skills'][] = $skillLevel; 
         }
         return $skills;
     }
@@ -53,8 +56,8 @@ class SkillController extends Controller
 
     public function addSkillToCharacter(Request $request)
     {
-        $skill = Skill::where('id', $request->input('skill'));
-        $character = Character::where('id', $request->input('character'));
+        $skill = Skill::where('short', $request->input('short'))->first();
+        $character = Character::where('id', $request->input('character_id'))->first();
         $level = $request->input('level');
         $skillLevel = new SkillLevel;
         $skillLevel->character_id = $character->id;
@@ -67,42 +70,37 @@ class SkillController extends Controller
 
     public function updateSkillLevel(Request $request)
     {
-        $skillLevel = SkillLevel::where('id', $request->input('skill_level'));
+        $skillLevel = SkillLevel::where([
+            'short' => $request->input('short'),
+            'character_id' => $request->input('character_id'),
+        ])->first();
         $skillLevel->level = $request->input('level');
         $skillLevel->save();
 
         return Controller::SUCCESS;
     }
 
-    public function deleteSkillLevel(integer $id)
+    public function deleteSkillLevel(int $id)
     {
-        SkillLevel::destroy($id);
-
+        SkillLevel::where('id', $id)->first()->delete();
         return Controller::SUCCESS;
     }
 
     public function addSkillToJob(Request $request)
     {
-        $skill = Skill::where('id', $request->input('skill'));
-        $job = Job::where('id', $request->input('job'));
+        $skill = Skill::where('short', $request->input('skill'))->first();
+        $job = Job::where('short', $request->input('job'))->first();
         $skillJob = new JobSkill;
         $skillJob->skill_id = $skill->id;
-        $skillJob->job_skill = $job->id;
+        $skillJob->job_id = $job->id;
         $skillJob->save();
-
-        return Controller::SUCCESS;
-    }
-
-    public function deleteSkillJob(integer $id)
-    {
-        SkillJob::destroy($id);
 
         return Controller::SUCCESS;
     }
 
     public function editSkill(Request $request)
     {
-        $skill = Skill::where('id', $request->input('skill'));
+        $skill = Skill::where('short', $request->input('short'))->first();
         $field = $request->input('field');
         $value = $request->input('value');
 
@@ -122,10 +120,16 @@ class SkillController extends Controller
         return Controller::SUCCESS;
     }
 
-    public function deleteSkill(integer $id)
+    public function deleteSkillJob(int $id)
     {
-        Skill::destroy($id);
+        SkillJob::destroy($id);
 
+        return Controller::SUCCESS;
+    }
+
+    public function deleteSkill(int $id)
+    {
+        Skill::where('id', $id)->first()->delete();
         return Controller::SUCCESS;
     }
 }
