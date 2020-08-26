@@ -14,10 +14,14 @@ class InventoryController extends Controller
         return Inventory::all();
     }
 
-    public function getInventoriesByCharacter(Request $request)
+    public function getInventoriesByCharacter(int $discord_id)
     {
-        $character = $request->input('character_id');
-        return Inventory::where('character_id', $character);
+        $character = Character::where('discord_id', $discord_id);
+        $result = [
+            'character' => $character,
+            'inventory' => Inventory::where('character_id', $character->id)->get()
+        ];
+        return $result;
     }
 
     public function createInventory(Request $request)

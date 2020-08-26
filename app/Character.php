@@ -35,4 +35,9 @@ class Character extends Model
     {
         return $this->hasMany('App\Conviction');
     }
+
+    public function wounds()
+    {
+        return $this->hasMany('App\Wound');
+    }
 }

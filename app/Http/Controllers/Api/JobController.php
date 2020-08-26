@@ -13,9 +13,14 @@ class JobController extends Controller
         return Job::all();
     }
 
-    public function getJobById(integer $id)
+    public function getJobById(int $id)
     {
-        return Job::where('id', $id);
+        return Job::where('id', $id)->first();
+    }
+
+    public function getJobByShort(string $short)
+    {
+        return Job::where('short', $short)->first();
     }
 
     public function createJob(Request $request)
@@ -29,7 +34,7 @@ class JobController extends Controller
 
     public function editJob(Request $request)
     {
-        $job = Job::where('id', $request->input('id'));
+        $job = Job::where('id', $request->input('id'))->first();
         $field = $request->input('field');
         $value = $request->input('value');
         switch ($field) {
@@ -48,9 +53,9 @@ class JobController extends Controller
         return Controller::SUCCESS;
     }
 
-    public function deleteJob(integer $id)
+    public function deleteJob(int $id)
     {
-        Job::destroy($id);
+        Job::where('id', $id)->first()->delete();
 
         return Controller::SUCCESS;
     }

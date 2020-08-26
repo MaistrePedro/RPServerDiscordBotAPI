@@ -65,9 +65,9 @@ class CharacterController extends Controller
         return Controller::SUCCESS;
     }
 
-    public function kill(integer $id)
+    public function kill(int $id)
     {
-        Character::destroy($id);
+        Character::where('id', $id)->delete();
 
         return Controller::SUCCESS;
     }

@@ -53,6 +53,7 @@ class FamilyController extends Controller
                 return Controller::ERROR;
                 break;
         }
+        $family->save();
 
         return Controller::SUCCESS;
     }
