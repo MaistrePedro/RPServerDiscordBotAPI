@@ -1,7 +1,7 @@
 <?php
 
-use Illuminate\Database\Seeder;
 use App\Skill;
+use Illuminate\Database\Seeder;
 
 class SkillSeeder extends Seeder
 {
