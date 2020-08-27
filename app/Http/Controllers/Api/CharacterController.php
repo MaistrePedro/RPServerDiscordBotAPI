@@ -63,23 +63,61 @@ class CharacterController extends Controller
 
     public function createCharacter(Request $request)
     {
-        $job = Job::where('short', $request->input('job'))->first();
-        $jobId = $job->id;
+        $job_short  = $request->input('job');
+        $discord_id = $request->input('discord_id');
+        $name       = $request->input('name');
+        $age        = $request->input('age');
+        $gift       = $request->input('gift');
+
+        $job = Job::where('short', $job_short)->first();
+
+        if (!$job) {
+            return response()->json([
+                'success' => Controller::ERROR,
+                'info'    => 'Le métier demandé n\'existe pas',
+            ]);
+        }
+
+        if (strlen(trim($name)) < 3) {
+            return response()->json([
+                'success' => Controller::ERROR,
+                'info'    => 'Le nom est trop court (3 caractères minimum)',
+            ]);
+        }
+
+        if ($age) < 1) {
+            return response()->json([
+                'success' => Controller::ERROR,
+                'info'    => 'L\'âge ne peut être inférieur à 1',
+            ]);
+        }
+
+        if (strlen(trim($gift)) < 3) {
+            return response()->json([
+                'success' => Controller::ERROR,
+                'info'    => 'Le talent est trop court (3 caractères minimum)',
+            ]);
+        }
 
         $character = new Character();
-        $character->discord_id = $request->input('discord_id');
-        $character->name = $request->input('name');
-        $character->age = $request->input('age');
-        $character->gift = $request->input('gift');
-        $character->job_id = $jobId;
+        $job_id    = $job->id;
+
+        $character->discord_id = $discord_id;
+        $character->name       = trim($name);
+        $character->age        = $age;
+        $character->gift       = trim($gift);
+        $character->job_id     = $job_id;
         $character->save();
 
-        return Controller::SUCCESS;
+        return response()->json([
+            'character' => $character,
+            'success'   => Controller::SUCCESS,
+        ]);
     }
 
     public function editCharacter(Request $request)
     {
-        $character = Character::where('id', $request->input('id'))->first();
+        $character = Character::where('discord_id', $request->input('id'))->first();
         $field = $request->input('field');
         $value = $request->input('value');
         
@@ -99,7 +137,10 @@ class CharacterController extends Controller
         }
         $character->save();
 
-        return Controller::SUCCESS;
+        return response()->json([
+            'success'   => Controller::SUCCESS,
+            'character' => $character,
+        ]);
     }
 
     public function killByDiscordId(string $id)
