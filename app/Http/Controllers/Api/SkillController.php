@@ -14,21 +14,45 @@ class SkillController extends Controller
 {
     public function getSkills()
     {
-        return Skill::all();
+        $skills = Skill::all();
+
+        return response()->json([
+            'skills' => $skills,
+            'succes' => Controller::SUCCESS,
+        ]);
     }
 
     public function getSkillsByJob(string $short)
     {
         $job = Job::where('short', $short)->first();
-        $skillJobs = JobSkill::where('job_id', $job->id)->get(); 
-        $skills = [];
-        $skills['job'] = $job;
+
+        if (!$job) {
+            return response()->json([
+                'success' => Controller::ERROR,
+            ], 404);
+        }
+
+        $skillJobs = JobSkill::where('job_id', $job->id)->get();
+
+        if (!$skillJobs) {
+            return response()->json([
+                'success' => Controller::ERROR,
+            ], 404);
+        }
+
+        $skills           = [];
+        $skills['job']    = $job;
         $skills['skills'] = [];
+
         foreach ($skillJobs as $skillJob) {
             $skillJob->skill;
             $skills['skills'][] = $skillJob;
         }
-        return $skills;
+
+        return response()->json([
+            'skills' => $skills,
+            'succes' => Controller::SUCCESS,
+        ]);
     }
 
     public function getSkillsByCharacter(string $discord_id)

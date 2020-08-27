@@ -1,6 +1,7 @@
 <?php
 
 return [
+  // ! Skills
   "skills" => [
     [
       'name'  => 'Archerie',
@@ -189,6 +190,50 @@ return [
     [
       'name'  => 'Survie',
       'short' => 'survival',
+    ],
+  ],
+
+  // ! Jobs
+  'jobs' => [
+    [
+      'name'  => 'Chasseur',
+      'short' => 'hunt',
+    ],
+    [
+      'name'  => 'Agriculteur',
+      'short' => 'farm',
+    ],
+    [
+      'name'  => 'Artisan',
+      'short' => 'craft',
+    ],
+    [
+      'name'  => 'Artiste',
+      'short' => 'art',
+    ],
+    [
+      'name'  => 'Soldat',
+      'short' => 'soldier',
+    ],
+    [
+      'name'  => 'Criminel',
+      'short' => 'criminal',
+    ],
+    [
+      'name'  => 'Explorateur',
+      'short' => 'explorer',
+    ],
+    [
+      'name'  => 'Marin',
+      'short' => 'sailor',
+    ],
+    [
+      'name'  => 'Médecin',
+      'short' => 'doctor',
+    ],
+    [
+      'name'  => 'Vagabond',
+      'short' => 'hobo',
     ],
   ],
 ];
