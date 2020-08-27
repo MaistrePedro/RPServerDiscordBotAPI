@@ -85,7 +85,7 @@ class CharacterController extends Controller
             ]);
         }
 
-        if ($age) < 1) {
+        if ($age < 1) {
             return response()->json([
                 'success' => Controller::ERROR,
                 'info'    => 'L\'âge ne peut être inférieur à 1',
