@@ -23,7 +23,7 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
 Route::get('/character/list', 'Api\CharacterController@getAllCharacters');
 Route::get('/character/show/{id}', 'Api\CharacterController@getOneCharacterById');
 Route::get('/character/discord/{discordId}', 'Api\CharacterController@getOneCharacterByDiscordId');
-Route::post('character/new', 'Api\CharacterController@createCharacter');
+Route::post('/character/new', 'Api\CharacterController@createCharacter');
 Route::post('/character/edit', 'Api\CharacterController@editCharacter');
 Route::delete('/character/kill/{id}', 'Api\CharacterController@kill');
 
