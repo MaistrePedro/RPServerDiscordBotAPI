@@ -55,10 +55,10 @@ class CharacterController extends Controller
         $character->family;
         $character->convictions;
         $character->wounds;
-        $results = [
-            'character' => $character
-        ];
-        return response()->json([$results]);
+
+        return response()->json([
+            'character' => $character,
+        ]);
     }
 
     public function createCharacter(Request $request)
