@@ -109,6 +109,13 @@ class CharacterController extends Controller
         $character->job_id     = $job_id;
         $character->save();
 
+        $character->job();
+        $character->inventory();
+        $character->skills();
+        $character->family();
+        $character->convictions();
+        $character->wounds();
+
         return response()->json([
             'character' => $character,
             'success'   => Controller::SUCCESS,
