@@ -14,7 +14,7 @@ class UpdateCharacterTable extends Migration
     public function up()
     {
         Schema::table('characters', function (Blueprint $table) {
-            $table->string('discord_id')->unique();            
+            $table->string('discord_id')->unique()->change();            
         });
     }
 
