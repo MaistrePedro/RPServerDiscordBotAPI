@@ -102,10 +102,20 @@ class CharacterController extends Controller
         return Controller::SUCCESS;
     }
 
-    public function kill(int $id)
+    public function killByDiscordId(string $id)
     {
-        Character::where('id', $id)->first()->delete();
+        $character = Character::where('discord_id', $id)->first();
+        
+        if (!$character) {
+            return response()->json([
+                'success' => Controller::ERROR,
+            ], 404);
+        }
 
-        return Controller::SUCCESS;
+        $character->delete();
+
+        return response()->json([
+            'success' => Controller::SUCCESS,
+        ]);
     }
 }
