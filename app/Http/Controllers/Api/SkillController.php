@@ -14,7 +14,7 @@ class SkillController extends Controller
 {
     public function getSkills()
     {
-        $skills = Skill::all();
+        $skills = Skill::paginate(15);
 
         return response()->json([
             'skills' => $skills,
