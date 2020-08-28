@@ -116,9 +116,23 @@ class SkillController extends Controller
 
     public function updateSkillLevel(Request $request)
     {
+        $skill = Skill::where('short', $request->input('short'))->first();
+        if (!$skill) {
+            return response()->json([
+                'success' => Controller::ERROR,
+                'message' => 'Désolé, je ne trouve pas cette compétence'
+            ]);
+        }
+        $character = Character::where('discord_id', $request->input('character_id'))->first();
+        if (!$character) {
+            return response()->json([
+                'success' => Controller::ERROR,
+                'message' => 'Désolé, je ne trouve pas ce personnage'
+            ]);
+        }
         $skillLevel = SkillLevel::where([
-            'short' => $request->input('short'),
-            'character_id' => $request->input('character_id'),
+            'character_id' => $character->id,
+            'skill_id' => $skill->id
         ])->first();
         if (!$skillLevel) {
             return response()->json([
