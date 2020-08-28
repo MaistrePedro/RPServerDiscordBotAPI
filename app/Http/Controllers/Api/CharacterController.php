@@ -109,12 +109,12 @@ class CharacterController extends Controller
         $character->job_id     = $job_id;
         $character->save();
 
-        $character->job();
-        $character->inventory();
-        $character->skills();
-        $character->family();
-        $character->convictions();
-        $character->wounds();
+        $character->job;
+        $character->inventory;
+        $character->skills;
+        $character->family;
+        $character->convictions;
+        $character->wounds;
 
         return response()->json([
             'character' => $character,
@@ -155,12 +155,13 @@ class CharacterController extends Controller
                 break;
 
             default:
-                $character->job();
-                $character->inventory();
-                $character->skills();
-                $character->family();
-                $character->convictions();
-                $character->wounds();
+                $character->job;
+                $character->inventory;
+                $character->skills;
+                $character->family;
+                $character->convictions;
+                $character->wounds;
+
                 return response()->json([
                     'success' => Controller::ERROR,
                     'info'    => 'Aucun champ à modifier',
@@ -169,12 +170,12 @@ class CharacterController extends Controller
 
         $character->save();        
 
-        $character->job();
-        $character->inventory();
-        $character->skills();
-        $character->family();
-        $character->convictions();
-        $character->wounds();
+        $character->job;
+        $character->inventory;
+        $character->skills;
+        $character->family;
+        $character->convictions;
+        $character->wounds;
 
         return response()->json([
             'success'   => Controller::SUCCESS,
