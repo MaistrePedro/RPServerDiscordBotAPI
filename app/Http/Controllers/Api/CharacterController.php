@@ -58,7 +58,6 @@ class CharacterController extends Controller
 
         foreach($character->inventory as $object) {
             $info = $object->inventoryPiece;
-            // dd($info);
             $object->place = $info->label;
         }
 

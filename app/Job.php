@@ -18,7 +18,7 @@ class Job extends Model
 
     public function skills()
     {
-        return $this->hasMany('App\JobSkill');
+        return $this->hasMany('App\JobSkill', 'job_skill_id');
     }
 
     public function characters()

@@ -23,7 +23,7 @@ class Inventory extends Model
 
     public function inventoryPiece()
     {
-        return $this->belongsTo('App\InventoryPieces');
+        return $this->belongsTo('App\InventoryPieces', 'inventory_pieces_id', 'id');
     }
 
     public function character()
