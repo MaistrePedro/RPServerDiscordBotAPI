@@ -51,7 +51,7 @@ class SkillController extends Controller
 
         return response()->json([
             'skills' => $skills,
-            'succes' => Controller::SUCCESS,
+            'success' => Controller::SUCCESS,
         ]);
     }
 
@@ -63,9 +63,11 @@ class SkillController extends Controller
         $skills['character_name'] = $character->name;
         foreach ($skillLevels as $skillLevel) {
             $skillLevel->skill;
-            $skills['skills'][] = $skillLevel; 
+            $skills['skills'][] = $skillLevel;
         }
-        return $skills;
+        return response()->json([
+            'skills' => $skills
+        ]);
     }
 
     public function createSkill(Request $request)
@@ -75,13 +77,28 @@ class SkillController extends Controller
         $skill->short = $request->input('short');
         $skill->save();
 
-        return Controller::SUCCESS;
+        return response()->json([
+            'success' => Controller::SUCCESS,
+            'skill' => $skill
+        ]);
     }
 
     public function addSkillToCharacter(Request $request)
     {
         $skill = Skill::where('short', $request->input('short'))->first();
+        if (!$skill) {
+            return response()->json([
+                'success' => Controller::ERROR,
+                'message' => 'Désolé, je ne trouve pas la compétence'
+            ]);
+        }
         $character = Character::where('discord_id', $request->input('character_id'))->first();
+        if (!$character) {
+            return response()->json([
+                'success' => Controller::ERROR,
+                'message' => 'Désolé, je ne trouve pas le personnage'
+            ]);
+        }
         $level = $request->input('level');
         $skillLevel = new SkillLevel;
         $skillLevel->character_id = $character->id;
@@ -89,7 +106,12 @@ class SkillController extends Controller
         $skillLevel->level = $level;
         $skillLevel->save();
 
-        return Controller::SUCCESS;
+        return response()->json([
+            'success' => Controller::SUCCESS,
+            'skill' => $skill,
+            'character' => $character,
+            'level' => $skillLevel->level
+        ]);
     }
 
     public function updateSkillLevel(Request $request)
@@ -98,33 +120,68 @@ class SkillController extends Controller
             'short' => $request->input('short'),
             'character_id' => $request->input('character_id'),
         ])->first();
+        if (!$skillLevel) {
+            return response()->json([
+                'success' => Controller::ERROR,
+                'message' => 'Désolé, il semblerait que ce personnage n\'ait pas appris cette compétence'
+            ]);
+        }
         $skillLevel->level = $request->input('level');
         $skillLevel->save();
+        $skillLevel->skill;
+        $skillLevel->character;
 
-        return Controller::SUCCESS;
+        return response()->json([
+            'success' => Controller::SUCCESS,
+            'skillLevel' => $skillLevel,
+        ]);
     }
 
     public function deleteSkillLevel(int $id)
     {
         SkillLevel::where('id', $id)->first()->delete();
-        return Controller::SUCCESS;
+        return response()->json([
+            'success' => Controller::SUCCESS
+        ]);
     }
 
     public function addSkillToJob(Request $request)
     {
         $skill = Skill::where('short', $request->input('skill'))->first();
+        if (!$skill) {
+            return response()->json([
+                'success' => Controller::ERROR,
+                'message' => 'Désolé, je ne trouve pas cette compétence'
+            ]);
+        }
         $job = Job::where('short', $request->input('job'))->first();
+        if (!$job) {
+            return response()->json([
+                'success' => Controller::ERROR,
+                'message' => 'Désolé, je ne trouve pas ce métier'
+            ]);
+        }
         $skillJob = new JobSkill;
         $skillJob->skill_id = $skill->id;
         $skillJob->job_id = $job->id;
         $skillJob->save();
 
-        return Controller::SUCCESS;
+        return response()->json([
+            'success' => Controller::SUCCESS,
+            'skill' => $skill,
+            'job' => $job
+        ]);
     }
 
     public function editSkill(Request $request)
     {
         $skill = Skill::where('short', $request->input('short'))->first();
+        if (!$skill) {
+            return response()->json([
+                'success' => Controller::ERROR,
+                'message' => 'Désolé, je ne trouve pas cette compétence'
+            ]);
+        }
         $field = $request->input('field');
         $value = $request->input('value');
 
@@ -141,19 +198,26 @@ class SkillController extends Controller
         }
         $skill->save();
 
-        return Controller::SUCCESS;
+        return response()->json([
+            'success' => Controller::SUCCESS,
+            'skill' => $skill
+        ]);
     }
 
     public function deleteSkillJob(int $id)
     {
-        SkillJob::destroy($id);
+        JobSkill::where('id', $id)->first()->delete();
 
-        return Controller::SUCCESS;
+        return response()->json([
+            'success' => Controller::SUCCESS
+        ]);
     }
 
     public function deleteSkill(int $id)
     {
         Skill::where('id', $id)->first()->delete();
-        return Controller::SUCCESS;
+        return response()->json([
+            'success' => Controller::SUCCESS
+        ]);
     }
 }
