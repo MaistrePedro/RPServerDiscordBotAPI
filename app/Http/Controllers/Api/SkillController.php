@@ -81,7 +81,7 @@ class SkillController extends Controller
     public function addSkillToCharacter(Request $request)
     {
         $skill = Skill::where('short', $request->input('short'))->first();
-        $character = Character::where('id', $request->input('character_id'))->first();
+        $character = Character::where('discord_id', $request->input('character_id'))->first();
         $level = $request->input('level');
         $skillLevel = new SkillLevel;
         $skillLevel->character_id = $character->id;
