@@ -125,10 +125,16 @@ class CharacterController extends Controller
     public function editCharacter(Request $request)
     {
         $character = Character::where('discord_id', $request->input('id'))->first();
+
+        if (!$character) {
+            return response()->json([
+                'success' => Controller::ERROR,
+                'info'    => 'Personnage introuvable',
+            ]);
+        }
+
         $field = $request->input('field');
         $value = $request->input('value');
-
-        $job = Job::where('short', $value)->first();
         
         switch ($field) { 
             case Character::NAME:
@@ -141,8 +147,14 @@ class CharacterController extends Controller
                 $character->gift = $value;
                 break;
             case Character::JOB:
+                $job = Job::where('short', $value)->first();
                 $character->job_id = $job->id;
                 break;
+            default:
+                return response()->json([
+                    'success' => Controller::ERROR,
+                    'info'    => 'Aucun champ à modifier',
+                ]);
         }
         $character->save();
 
