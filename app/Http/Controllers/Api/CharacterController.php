@@ -26,11 +26,11 @@ class CharacterController extends Controller
         $character->convictions;
         $character->wounds;
 
-        // foreach($character->inventory as $object) {
-        //     $info = $object->inventoryPiece;
-        //     dd($info);
-        //     $object->place = $info->label;
-        // }
+        foreach($character->inventory as $object) {
+            $info = $object->inventoryPiece;
+            // dd($info);
+            $object->place = $info->label;
+        }
 
         foreach ($character->skills as $skill) {
             $info         = $skill->skill;
@@ -55,6 +55,19 @@ class CharacterController extends Controller
         $character->family;
         $character->convictions;
         $character->wounds;
+
+        foreach($character->inventory as $object) {
+            $info = $object->inventoryPiece;
+            // dd($info);
+            $object->place = $info->label;
+        }
+
+        foreach ($character->skills as $skill) {
+            $info         = $skill->skill;
+            $skill->id    = $info->id;
+            $skill->name  = $info->name;
+            $skill->short = $info->short;
+        }
 
         return response()->json([
             'character' => $character,
