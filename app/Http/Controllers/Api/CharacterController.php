@@ -140,23 +140,41 @@ class CharacterController extends Controller
             case Character::NAME:
                 $character->name = $value;
                 break;
+
             case Character::AGE:
                 $character->age = $value;
                 break;
+
             case Character::GIFT:
                 $character->gift = $value;
                 break;
+
             case Character::JOB:
                 $job = Job::where('short', $value)->first();
                 $character->job_id = $job->id;
                 break;
+
             default:
+                $character->job();
+                $character->inventory();
+                $character->skills();
+                $character->family();
+                $character->convictions();
+                $character->wounds();
                 return response()->json([
                     'success' => Controller::ERROR,
                     'info'    => 'Aucun champ à modifier',
                 ]);
         }
-        $character->save();
+
+        $character->save();        
+
+        $character->job();
+        $character->inventory();
+        $character->skills();
+        $character->family();
+        $character->convictions();
+        $character->wounds();
 
         return response()->json([
             'success'   => Controller::SUCCESS,
