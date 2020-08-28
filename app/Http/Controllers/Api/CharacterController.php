@@ -127,6 +127,8 @@ class CharacterController extends Controller
         $character = Character::where('discord_id', $request->input('id'))->first();
         $field = $request->input('field');
         $value = $request->input('value');
+
+        $job = Job::where('short', $value)->first();
         
         switch ($field) { 
             case Character::NAME:
@@ -139,7 +141,7 @@ class CharacterController extends Controller
                 $character->gift = $value;
                 break;
             case Character::JOB:
-                $character->job_id = $value;
+                $character->job_id = $job->id;
                 break;
         }
         $character->save();
