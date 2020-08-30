@@ -18,7 +18,7 @@ class InventoryController extends Controller
     public function getInventoriesByCharacter(string $discord_id)
     {
         $character = Character::where('discord_id', $discord_id)->first();
-        dd($character);
+        // dd($character);
         if (!$character) {
             return response()->json([
                 'success' => Controller::ERROR,
