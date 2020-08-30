@@ -62,7 +62,9 @@ class SkillController extends Controller
         $skills = [];
         $skills['character_name'] = $character->name;
         foreach ($skillLevels as $skillLevel) {
-            $skillLevel->skill;
+             $skill = $skillLevel->skill;
+             $skillLevel->name = $skill->name;
+             $skillLevel->short = $skill->short;
             $skills['skills'][] = $skillLevel;
         }
         return response()->json([
