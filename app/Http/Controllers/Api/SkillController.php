@@ -231,7 +231,15 @@ class SkillController extends Controller
 
     public function deleteSkill(string $short)
     {
-        Skill::where('short', $short)->first()->delete();
+        $skill = Skill::where('short', $short)->first();
+        if (!$skill) {
+            return response()->json([
+                'success' => Controller::ERROR,
+            ], 404);
+        }
+
+        $skill->delete();
+        
         return response()->json([
             'success' => Controller::SUCCESS
         ]);
