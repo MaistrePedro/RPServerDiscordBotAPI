@@ -133,7 +133,7 @@ class InventoryController extends Controller
         $piece = InventoryPieces::where('short', $request->input('short'))->first();
         if (!$piece) {
             return response()->json([
-                'success' => Controller::FALSE,
+                'success' => Controller::ERROR,
                 'message' => 'Je n\'ai pas trouvé cet emplacement.'
             ]);
         }
@@ -162,7 +162,7 @@ class InventoryController extends Controller
     {
         InventoryPieces::where('id', $id)->first()->delete();
         return response()->json([
-            'success' => Controller::SUCCESS,
+            'success' => Controller::SUCCESS
         ]);
     }
 }
