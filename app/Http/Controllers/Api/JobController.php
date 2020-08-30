@@ -68,9 +68,9 @@ class JobController extends Controller
         ]);
     }
 
-    public function deleteJob(int $id)
+    public function deleteJob(string $short)
     {
-        Job::where('id', $id)->first()->delete();
+        Job::where('short', $short)->first()->delete();
 
         return response()->json([
             'success' => Controller::SUCCESS

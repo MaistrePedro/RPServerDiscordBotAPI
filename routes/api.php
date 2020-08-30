@@ -34,7 +34,7 @@ Route::get('/job/show/{id}', 'Api\JobController@getJobById');
 Route::get('/job/short/{short}', 'Api\JobController@getJobByShort');
 Route::post('/job/create', 'Api\JobController@createJob');
 Route::post('/job/edit', 'Api\JobController@editJob');
-Route::delete('/job/delete/{id}', 'Api\JobController@deleteJob');
+Route::delete('/job/delete/{short}', 'Api\JobController@deleteJob');
 
 /* Inventory Routes */
 
