@@ -10,17 +10,26 @@ class JobController extends Controller
 {
     public function getAllJobs()
     {
-        return Job::all();
+        $jobs = Job::all();
+        return response()->json([
+            'jobs' => $jobs
+        ]);
     }
 
     public function getJobById(int $id)
     {
-        return Job::where('id', $id)->first();
+        $jobs = Job::where('id', $id)->first();
+        return response()->json([
+            'jobs' => $jobs
+        ]);
     }
 
     public function getJobByShort(string $short)
     {
-        return Job::where('short', $short)->first();
+        $jobs = Job::where('short', $short)->first();
+        return response()->json([
+            'jobs' => $jobs
+        ]);
     }
 
     public function createJob(Request $request)
@@ -29,7 +38,10 @@ class JobController extends Controller
         $job->name = $request->input('name');
         $job->short = $request->input('short');
         $job->save();
-        return Controller::SUCCESS;
+        return response()->json([
+            'success' => Controller::SUCCESS,
+            'job' => $job
+        ]);
     }
 
     public function editJob(Request $request)
