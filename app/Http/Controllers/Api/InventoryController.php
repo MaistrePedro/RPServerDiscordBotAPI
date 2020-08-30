@@ -15,9 +15,10 @@ class InventoryController extends Controller
         return Inventory::paginate(20);
     }
 
-    public function getInventoriesByCharacter(int $discord_id)
+    public function getInventoriesByCharacter(string $discord_id)
     {
         $character = Character::where('discord_id', $discord_id)->first();
+        dd($character);
         if (!$character) {
             return response()->json([
                 'success' => Controller::ERROR,
