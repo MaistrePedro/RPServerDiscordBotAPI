@@ -46,7 +46,7 @@ class JobController extends Controller
 
     public function editJob(Request $request)
     {
-        $job = Job::where('id', $request->input('id'))->first();
+        $job = Job::where('short', $request->input('short'))->first();
         $field = $request->input('field');
         $value = $request->input('value');
         switch ($field) {
@@ -62,13 +62,18 @@ class JobController extends Controller
         }
         $job->save();
 
-        return Controller::SUCCESS;
+        return response()->json([
+            'success' => Controller::SUCCESS,
+            'job' => $job
+        ]);
     }
 
     public function deleteJob(int $id)
     {
         Job::where('id', $id)->first()->delete();
 
-        return Controller::SUCCESS;
+        return response()->json([
+            'success' => Controller::SUCCESS
+        ]);
     }
 }
