@@ -22,25 +22,41 @@ class InventoryController extends Controller
             'character_name' => $character->name,
             'inventory' => Inventory::where('character_id', $character->id)->get()
         ];
-        return response()->json([$result]);
+        return response()->json($result);
     }
 
     public function createInventory(Request $request)
     {
         $piece = InventoryPieces::where('short', $request->input('piece'))->first();
-        $pieceId = $piece->id;
-        
+        if (!$piece) {
+            return response()->json([
+                'success' => Controller::ERROR,
+                'message' => 'Je ne trouve pas cet emplacement'
+            ]);
+        }
+        $character = Character::where('discord_id', $request->input('character'))->first();
+        if (!$character) {
+            return response()->json([
+                'success' => Controller::ERROR,
+                'message' => 'Je ne trouve pas ce personnage'
+            ]);
+        }
+
         $inventory = new Inventory;
         $inventory->name = $request->input('name');
         $inventory->damages = $request->input('damages');
         $inventory->effect = $request->input('effect');
         $inventory->quantity = $request->input('quantity');
         $inventory->unit = $request->input('unit');
-        $inventory->inventory_pieces_id = $pieceId;
-        $inventory->character_id = $request->input('character_id');
+        $inventory->inventory_pieces_id = $piece->id;
+        $inventory->character_id = $character->id;
         $inventory->save();
 
-        return Controller::SUCCESS;
+        return response()->json([
+            'character' => $character,
+            'item' => $inventory,
+            'success' => Controller::SUCCESS
+        ]);
     }
 
     public function editInventory(Request $request)
@@ -69,32 +85,34 @@ class InventoryController extends Controller
                     break;
                 }
             default:
-                return Controller::ERROR;
+                return response()->json([
+                    'success' => Controller::ERROR,
+                    'message' => 'Je ne comprends pas.'
+                ]);
                 break;
         }
         $object->save();
-        return Controller::SUCCESS;
+        return response()->json([
+            'success' => Controller::SUCCESS,
+            'item' => $object
+        ]);
     }
 
     public function destroy(integer $id)
     {
         Inventory::where('id', $id)->first()->delete();
-        return Controller::SUCCESS;
+        return response()->json([
+            'success' => Controller::SUCCESS
+        ]);
     }
 
     public function getInventoryPieces()
     {
-        return InventoryPieces::all();
-    }
-
-    public function getOneInventoryPiece(int $id)
-    {
-        return InventoryPieces::where('id', $id)->first();
-    }
-
-    public function getOneInventoryPieceByShort(string $short)
-    {
-        return InventoryPieces::where('short', $short)->first();
+        $inventoryPieces = InventoryPieces::all();
+        return response()->json([
+            'success' => Controller::SUCCESS,
+            'inventoryPieces' => $inventoryPieces
+        ]);
     }
 
     public function createInventoryPiece(Request $request)
@@ -104,12 +122,21 @@ class InventoryController extends Controller
         $piece->short = $request->input('short');
         $piece->save();
 
-        return Controller::SUCCESS;
+        return response()->json([
+            'success' => Controller::SUCCESS,
+            'location' => $piece
+        ]);
     }
 
     public function editInventoryPiece(Request $request)
     {
         $piece = InventoryPieces::where('short', $request->input('short'))->first();
+        if (!$piece) {
+            return response()->json([
+                'success' => Controller::FALSE,
+                'message' => 'Je n\'ai pas trouvé cet emplacement.'
+            ]);
+        }
         $field = $request->input('field');
         $value = $request->input('value');
 
@@ -125,12 +152,17 @@ class InventoryController extends Controller
             break;
         }
         $piece->save();
-        return Controller::SUCCESS;
+        return response()->json([
+            'success' => Controller::SUCCESS,
+            'location' => $piece
+        ]);
     }
 
     public function deleteInventoryPiece(integer $id)
     {
         InventoryPieces::where('id', $id)->first()->delete();
-        return Controller::SUCCESS;
+        return response()->json([
+            'success' => Controller::SUCCESS,
+        ]);
     }
 }

@@ -47,8 +47,6 @@ Route::delete('/inventory/destroy/{id}', 'Api\InventoryController@destroy');
 /* Inventory Pieces Routes */
 
 Route::get('/inventory/pieces', 'Api\InventoryController@getInventoryPieces');
-Route::get('/inventory/pieces/show/{id}', 'Api\InventoryController@getOneInventoryPiece');
-Route::get('/inventory/pieces/short/{short}', 'Api\InventoryController@getOneInventoryPieceByShort');
 Route::post('/inventory/pieces/new', 'Api\InventoryController@createInventoryPiece');
 Route::post('/inventory/pieces/edit', 'Api\InventoryController@editInventoryPiece');
 Route::delete('/inventory/pieces/delete/{id}', 'Api\InventoryController@deleteInventoryPiece');
