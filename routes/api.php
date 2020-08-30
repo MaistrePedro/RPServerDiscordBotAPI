@@ -81,7 +81,7 @@ Route::delete('/skill/character/forget/{id}', 'Api\SkillController@deleteSkillLe
 Route::post('/skill/job/add', 'Api\SkillController@addSkillToJob');
 Route::post('/skill/job/delete/{id}', 'Api\SkillController@deleteSkillJob');
 Route::post('/skill/edit', 'Api\SkillController@editSkill');
-Route::delete('/skill/delete/{id}', 'Api\SkillController@deleteSkill');
+Route::delete('/skill/delete/{short}', 'Api\SkillController@deleteSkill');
 
 /* Conviction Routes */
 
