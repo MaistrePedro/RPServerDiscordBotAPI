@@ -37,7 +37,10 @@ class WoundController extends Controller
         $wound->character_id = $character->id;
         $wound->save();
 
-        return Controller::SUCCESS;
+        return response()->json([
+            'success' => Controller::SUCCESS,
+            'wound' => $wound
+        ]);
     }
 
     public function editWound(Request $request)
