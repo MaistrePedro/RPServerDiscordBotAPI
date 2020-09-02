@@ -25,9 +25,15 @@ class InventoryController extends Controller
                 'message' => 'Je ne trouve pas le personnage'
             ]);
         }
+        $inventories = Inventory::where('character_id', $character->id)->get();
+
+        foreach ($inventories as $item) {
+            $infos = $item->inventoryPiece;
+            $item->location = $infos->label;
+        }
         $result = [
             'character_name' => $character->name,
-            'inventory' => Inventory::where('character_id', $character->id)->get()
+            'inventory' => $inventories
         ];
         return response()->json($result);
     }
@@ -58,6 +64,8 @@ class InventoryController extends Controller
         $inventory->inventory_pieces_id = $piece->id;
         $inventory->character_id = $character->id;
         $inventory->save();
+
+        $inventory->inventoryPiece;
 
         return response()->json([
             'character' => $character,
