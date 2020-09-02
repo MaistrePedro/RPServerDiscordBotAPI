@@ -65,12 +65,15 @@ class WoundController extends Controller
         }
         $wound->save();
 
-        return Controller::SUCCESS;
+        return response()->json([
+            'success' => Controller::SUCCESS,
+            'wound' => $wound
+        ]);
     }
 
     public function heal(int $id)
     {
-        Wound::destroy($id);
+        Wound::where('id', $id)->first()->delete();
         return Controller::SUCCESS;
     }
 }
