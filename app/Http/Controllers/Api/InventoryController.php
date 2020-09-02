@@ -174,7 +174,7 @@ class InventoryController extends Controller
         ]);
     }
 
-    public function deleteInventoryPiece(integer $id)
+    public function deleteInventoryPiece(int $id)
     {
         InventoryPieces::where('id', $id)->first()->delete();
         return response()->json([
