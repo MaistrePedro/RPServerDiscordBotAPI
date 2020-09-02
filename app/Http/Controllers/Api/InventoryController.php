@@ -65,7 +65,8 @@ class InventoryController extends Controller
         $inventory->character_id = $character->id;
         $inventory->save();
 
-        $inventory->inventoryPiece;
+        $infos = $inventory->inventoryPiece;
+        $inventory->location = $infos->label;
 
         return response()->json([
             'character' => $character,
