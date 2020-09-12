@@ -38,13 +38,24 @@ class FamilyController extends Controller
             ]);
         }
 
+        if (!$member) {
+            return \response()->json([
+                'status' => Controller::ERROR,
+                'message' => 'Le membre de famille est inconnu'
+            ]);
+        }
+
         $family = new Family();
         $family->name = $request->input('name');
         $family->family_member_id = $memberId;
         $family->character_id = $character->id;
         $family->save();
 
-        return Controller::SUCCESS;
+        return response()->json([
+            'status' => Controller::SUCCESS,
+            'character' => $character,
+            'member' => $family,
+        ]);
     }
 
     public function editFamily(Request $request)
@@ -68,7 +79,10 @@ class FamilyController extends Controller
         }
         $family->save();
 
-        return Controller::SUCCESS;
+        return response()->json([
+            'status' => Controller::SUCCESS,
+            'member' => $family,
+        ]);;
     }
 
     public function kill(int $id)
@@ -94,7 +108,9 @@ class FamilyController extends Controller
         $familyMember->short = $request->input('short');
         $familyMember->save();
 
-        return Controller::SUCCESS;
+        return response()->json([
+            'status' => Controller::SUCCESS,
+        ]);
     }
 
     public function editFamilyMember(Request $request)
@@ -114,12 +130,17 @@ class FamilyController extends Controller
                 break;
         }
         $familyMember->save();
-        return Controller::SUCCESS;
+        return response()->json([
+            'status' => Controller::SUCCESS,
+            'member' => $familyMember,
+        ]);
     }
 
     public function deleteFamilyMember(int $id)
     {
         FamilyMember::where('id', $id)->first()->delete();
-        return Controller::SUCCESS;
+        return response()->json([
+            'status' => Controller::SUCCESS,
+        ]);
     }
 }
