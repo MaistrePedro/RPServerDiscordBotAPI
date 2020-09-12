@@ -29,11 +29,19 @@ class FamilyController extends Controller
     {
         $member = FamilyMember::where('short', $request->input('member'));
         $memberId = $member->id;
+        $character = Character::where('discord_id', $request->input('character'));
+
+        if (!$character) {
+            return \response()->json([
+                'status' => Controller::ERROR,
+                'message' => 'Le personnage est inconnu'
+            ]);
+        }
 
         $family = new Family();
         $family->name = $request->input('name');
         $family->family_member_id = $memberId;
-        $family->character_id = $request->input('character_id');
+        $family->character_id = $character->id;
         $family->save();
 
         return Controller::SUCCESS;
