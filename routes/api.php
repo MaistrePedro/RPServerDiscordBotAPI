@@ -94,5 +94,5 @@ Route::delete('/conviction/delete/{id}', 'Api\ConvictionController@deleteConvict
 Route::get('/wound/list', 'Api\WoundController@getWounds');
 Route::get('/wound/show/{discord_id}', 'Api\WoundController@getWoundsByCharacter');
 Route::post('/wound/create', 'Api\WoundController@hurt');
-Route::post('/wound/edit', 'Api/WoundController@editWound');
+Route::post('/wound/edit', 'Api\WoundController@editWound');
 Route::delete('/wound/delete/{id}', 'Api\WoundController@heal');
