@@ -29,7 +29,7 @@ class FamilyController extends Controller
             'character_name' => $character->name,
             'family' => $family
         ];
-        return $results;
+        return response()->json([$results]);
     }
 
     public function createFamily(Request $request)
@@ -117,6 +117,7 @@ class FamilyController extends Controller
 
         return response()->json([
             'status' => Controller::SUCCESS,
+            'member' => $familyMember
         ]);
     }
 
