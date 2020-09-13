@@ -59,6 +59,8 @@ class FamilyController extends Controller
         $family->character_id = $character->id;
         $family->save();
 
+        $family->member = $member->label;
+
         return response()->json([
             'status' => Controller::SUCCESS,
             'character' => $character,
