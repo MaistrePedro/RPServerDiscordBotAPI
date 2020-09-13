@@ -26,10 +26,11 @@ class FamilyController extends Controller
             $member->member = $familyMember->label;
         }
         $results = [
+            'success' => Controller::SUCCESS,
             'character_name' => $character->name,
             'family' => $family
         ];
-        return response()->json([$results]);
+        return response()->json($results);
     }
 
     public function createFamily(Request $request)
