@@ -73,6 +73,7 @@ class FamilyController extends Controller
         $family = Family::where('id', $request->input('id'))->first();
         $field = $request->input('field');
         $value = $request->input('value');
+        $character = $family->character;
 
         switch ($field) {
             case Family::NAME:
@@ -92,7 +93,8 @@ class FamilyController extends Controller
         return response()->json([
             'status' => Controller::SUCCESS,
             'member' => $family,
-        ]);;
+            'character' => $character
+        ]);
     }
 
     public function kill(int $id)
