@@ -18,3 +18,5 @@ This API contains what you'll need to have to start a role playing server on Dis
 * Family management
 
 Discord Bot repository coming soon.
+
+Feel free to fork and upgrade this project !
