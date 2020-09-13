@@ -95,6 +95,8 @@ class FamilyController extends Controller
                 break;
         }
         $family->save();
+        $member = $family->familyMember;
+        $family->member = $member->label;
 
         return response()->json([
             'status' => Controller::SUCCESS,
