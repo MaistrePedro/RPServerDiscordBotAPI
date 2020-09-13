@@ -7,3 +7,14 @@ Refer yourself to the [Laravel documentation](https://laravel.com/docs/7.x/insta
 
 ## Initializing the bot
 You'll have to get your bot client ID and put it in the .env file, as well as your Discord server's name in APP_NAME variable.
+
+## Content of the API
+This API contains what you'll need to have to start a role playing server on Discord :
+* Character management
+* Skill management
+* Job management
+* Inventory management
+* Wounds management
+* Family management
+
+Discord Bot repository coming soon.
