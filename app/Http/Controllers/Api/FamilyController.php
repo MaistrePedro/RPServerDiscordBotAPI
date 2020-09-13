@@ -35,7 +35,6 @@ class FamilyController extends Controller
     public function createFamily(Request $request)
     {
         $member = FamilyMember::where('short', $request->input('member'));
-        $memberId = $member->id;
         $character = Character::where('discord_id', $request->input('character'));
 
         if (!$character) {
@@ -51,6 +50,7 @@ class FamilyController extends Controller
                 'message' => 'Le membre de famille est inconnu'
             ]);
         }
+        $memberId = $member->id;
 
         $family = new Family();
         $family->name = $request->input('name');
