@@ -71,6 +71,12 @@ class FamilyController extends Controller
     public function editFamily(Request $request)
     {
         $family = Family::where('id', $request->input('id'))->first();
+        if (!$family) {
+            return response()->json([
+                'status' => Controller::ERROR,
+                'message' => 'Je ne trouve pas la cible.'
+            ]);
+        }
         $field = $request->input('field');
         $value = $request->input('value');
         $character = $family->character;
