@@ -51,7 +51,6 @@ class FamilyController extends Controller
                 'message' => 'Le membre de famille est inconnu'
             ]);
         }
-        \dd($member);
         $memberId = $member->id;
 
         $family = new Family();
