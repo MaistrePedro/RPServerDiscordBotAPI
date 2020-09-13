@@ -12,15 +12,22 @@ class FamilyController extends Controller
 {
     public function getFamilies()
     {
-        return Family::all();
+        return response()->json([
+            'family' => Family::all()
+            ]);
     }
 
     public function getFamiliesByCharacter(string $discord_id)
     {
         $character = Character::where('discord_id', $discord_id)->first();
+        $family = Family::where('character_id', $character->id)->get();
+        foreach ($family as $member) {
+            $familyMember = $member->familyMember;
+            $member->member = $familyMember->label;
+        }
         $results = [
             'character_name' => $character->name,
-            'family' => Family::where('character_id', $character->id)->get()
+            'family' => $family
         ];
         return $results;
     }

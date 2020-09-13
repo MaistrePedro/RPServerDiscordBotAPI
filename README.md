@@ -1,4 +1,5 @@
-# Roleplay Discord Server Bot API 1.0
+# Roleplay Discord Server Bot API 
+1.0
 This project is made to help you provide an assisting bot to your roleplaying Discord server. It also offers a set of web pages to help your users retrieving every information about their characters. 
 In the future, if possible, I hope to be able to offer a tracking system for your scenarios.
 
