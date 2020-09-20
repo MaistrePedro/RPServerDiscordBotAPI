@@ -76,13 +76,13 @@ class SkillController extends Controller
     public function getSkillLevel(string $discordId, string $short)
     {
         $skill = Skill::where('short', $short)->first();
-        $user = User::where('discord_id', $discordId)->first();
+        $character = Character::where('discord_id', $discordId)->first();
         $skillLevel =SkillLevel::where([
-            'user_id' => $user->id,
+            'character_id' => $character->id,
             'skill_id' => $skill->id
         ])->first();
         return response()->json([
-            'user' => $user,
+            'character' => $character,
             'skill' => $skill,
             'level' => $skillLevel
         ]);
