@@ -72,6 +72,7 @@ Route::delete('/family/member/delete/{id}', 'Api\FamilyController@deleteFamilyMe
 Route::get('/skill/list', 'Api\SkillController@getSkills');
 Route::get('skill/job/show/{short}', 'Api\SkillController@getSkillsByJob');
 Route::get('/skill/character/show/{discord_id}', 'Api\SkillController@getSkillsByCharacter');
+Route::get('/skill/level/{discordId}/{short}', 'Api\SkillController@getSkillLevel');
 Route::post('/skill/new', 'Api\SkillController@createSkill');
 Route::post('/skill/character/add', 'Api\SkillController@addSkillToCharacter');
 Route::post('/skill/character/update', 'Api\SkillController@updateSkillLevel');
