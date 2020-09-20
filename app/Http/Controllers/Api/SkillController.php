@@ -9,6 +9,7 @@ use App\JobSkill;
 use App\SkillLevel;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use Illuminate\Foundation\Auth\User;
 
 class SkillController extends Controller
 {
@@ -69,6 +70,21 @@ class SkillController extends Controller
         }
         return response()->json([
             'skills' => $skills
+        ]);
+    }
+
+    public function getSkillLevel(string $discordId, string $short)
+    {
+        $skill = Skill::where('short', $short)->first();
+        $user = User::where('discord_id', $discordId)->first();
+        $skillLevel =SkillLevel::where([
+            'user_id' => $user->id,
+            'skill_id' => $skill->id
+        ])->first();
+        return response()->json([
+            'user' => $user,
+            'skill' => $skill,
+            'level' => $skillLevel
         ]);
     }
 
